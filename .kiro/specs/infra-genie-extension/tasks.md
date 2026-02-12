@@ -90,14 +90,14 @@ This implementation plan breaks down the Infra Genie VS Code extension into disc
   - Use DOMPurify or similar library for HTML sanitization
   - _Requirements: 9.3, 9.4_
 
-- [ ] 7. Implement message handlers in WebviewPanelManager
-  - [ ] 7.1 Implement handleUserInputSubmission()
+- [x] 7. Implement message handlers in WebviewPanelManager
+  - [x] 7.1 Implement handleUserInputSubmission()
     - Receive user input form data from webview
     - Initialize session with user input
     - Send acknowledgment to webview
     - _Requirements: 2.3, 2.5_
   
-  - [ ] 7.2 Implement handleChatMessage()
+  - [x] 7.2 Implement handleChatMessage()
     - Receive chat message from webview
     - Add user message to session history
     - Send loading state to webview
@@ -107,12 +107,12 @@ This implementation plan breaks down the Infra Genie VS Code extension into disc
     - Handle errors and send error messages to webview
     - _Requirements: 3.3, 4.2, 4.3, 4.4, 4.5, 6.4_
   
-  - [ ] 7.3 Implement handleNewSession()
+  - [x] 7.3 Implement handleNewSession()
     - Clear session data via SessionManager
     - Send session cleared message to webview
     - _Requirements: 7.1, 7.5_
   
-  - [ ] 7.4 Implement handleSavePRD()
+  - [x] 7.4 Implement handleSavePRD()
     - Receive PRD content and filename from webview
     - Get workspace folder
     - Write PRD content to file using VS Code file system API
@@ -160,26 +160,26 @@ This implementation plan breaks down the Infra Genie VS Code extension into disc
     - Transition to chat interface on success
     - _Requirements: 2.3_
 
-- [ ] 11. Implement ChatInterface component
-  - [ ] 11.1 Create chat layout structure
+- [x] 11. Implement ChatInterface component
+  - [x] 11.1 Create chat layout structure
     - Header with title and "New Session" button
     - Scrollable messages container
     - Input area with textarea and send button
     - _Requirements: 3.1, 3.2, 7.5_
   
-  - [ ] 11.2 Implement message display
+  - [x] 11.2 Implement message display
     - Render messages from state
     - Use MessageBubble component for each message
     - Show loading indicator when API is processing
     - _Requirements: 3.3, 4.3_
   
-  - [ ] 11.3 Implement auto-scroll behavior
+  - [x] 11.3 Implement auto-scroll behavior
     - Create ref for messages end
     - Use useEffect to scroll on new messages
     - Smooth scroll to bottom
     - _Requirements: 3.5_
   
-  - [ ] 11.4 Implement message input handling
+  - [x] 11.4 Implement message input handling
     - Controlled textarea with state
     - Send button click handler
     - Enter key to send (Shift+Enter for new line)
@@ -188,39 +188,39 @@ This implementation plan breaks down the Infra Genie VS Code extension into disc
     - Send sendChatMessage to extension
     - _Requirements: 3.3_
   
-  - [ ] 11.5 Implement new session handler
+  - [x] 11.5 Implement new session handler
     - New Session button click handler
     - Send newSession message to extension
     - Clear local message state
     - Return to user input form
     - _Requirements: 7.1, 7.5_
 
-- [ ] 12. Implement MessageBubble component
-  - [ ] 12.1 Create message bubble layout
+- [x] 12. Implement MessageBubble component
+  - [x] 12.1 Create message bubble layout
     - Different styling for user vs assistant messages
     - Display message content
     - Show timestamp
     - _Requirements: 3.4_
   
-  - [ ] 12.2 Implement markdown rendering
+  - [x] 12.2 Implement markdown rendering
     - Use react-markdown library
     - Render message content with markdown support
     - Apply syntax highlighting for code blocks
     - _Requirements: 5.2_
   
-  - [ ] 12.3 Implement copy functionality
+  - [x] 12.3 Implement copy functionality
     - Show copy button on hover
     - Copy message content to clipboard
     - Show feedback on successful copy
     - _Requirements: 5.3_
   
-  - [ ] 12.4 Implement PRD-specific actions
+  - [x] 12.4 Implement PRD-specific actions
     - Detect if message is a PRD (isPRD flag)
     - Show Copy and Save buttons for PRD messages
     - Send savePRD message to extension on save click
     - _Requirements: 5.3, 5.4_
 
-- [ ] 13. Implement error handling in webview
+- [x] 13. Implement error handling in webview
   - Create ErrorNotification component
   - Display error messages from extension
   - Show retry button for recoverable errors

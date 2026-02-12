@@ -3,6 +3,8 @@ import { ExtensionMessage, WebviewMessage, ChatMessage, UserInputData } from '..
 import { vscode } from './index';
 import MainMenu from './MainMenu';
 import UserInputForm from './UserInputForm';
+import ChatInterface from './ChatInterface';
+import ErrorNotification from './ErrorNotification';
 
 // Context for managing application state
 interface AppState {
@@ -10,11 +12,12 @@ interface AppState {
   messages: ChatMessage[];
   isLoading: boolean;
   error: string | null;
+  canRetry: boolean;
   setCurrentView: (view: 'mainMenu' | 'userInputForm' | 'chatInterface') => void;
   setMessages: (messages: ChatMessage[]) => void;
   addMessage: (message: ChatMessage) => void;
   setIsLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
+  setError: (error: string | null, canRetry?: boolean) => void;
   sendMessage: (message: WebviewMessage) => void;
 }
 
@@ -33,6 +36,8 @@ function App() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [canRetry, setCanRetry] = useState(false);
+  const [lastMessage, setLastMessage] = useState<string | null>(null);
 
   // Function to send messages to extension host
   const sendMessage = (message: WebviewMessage) => {
@@ -42,6 +47,12 @@ function App() {
   // Function to add a message to the chat
   const addMessage = (message: ChatMessage) => {
     setMessages(prev => [...prev, message]);
+  };
+
+  // Function to set error with optional retry flag
+  const handleSetError = (errorMessage: string | null, retry: boolean = false) => {
+    setError(errorMessage);
+    setCanRetry(retry);
   };
 
   // Set up message listener for extension messages
@@ -59,12 +70,12 @@ function App() {
             isPRD: message.data.isPRD
           });
           setIsLoading(false);
-          setError(null);
+          handleSetError(null); // Clear errors on successful operation
           break;
 
         case 'error':
-          // Display error message
-          setError(message.data.message);
+          // Display error message with retry option if available
+          handleSetError(message.data.message, message.data.canRetry || false);
           setIsLoading(false);
           break;
 
@@ -77,8 +88,9 @@ function App() {
           // Clear session and return to main menu
           setMessages([]);
           setCurrentView('mainMenu');
-          setError(null);
+          handleSetError(null); // Clear errors
           setIsLoading(false);
+          setLastMessage(null);
           break;
       }
     };
@@ -98,17 +110,35 @@ function App() {
     messages,
     isLoading,
     error,
+    canRetry,
     setCurrentView,
     setMessages,
     addMessage,
     setIsLoading,
-    setError,
+    setError: handleSetError,
     sendMessage
   };
 
   return (
     <AppContext.Provider value={contextValue}>
       <div className="app">
+        {/* Error notification displayed across all views */}
+        {error && (
+          <ErrorNotification
+            message={error}
+            canRetry={canRetry}
+            onRetry={() => {
+              // Clear error and retry last message
+              handleSetError(null);
+              if (lastMessage && currentView === 'chatInterface') {
+                setIsLoading(true);
+                sendMessage({ type: 'sendChatMessage', data: { message: lastMessage } });
+              }
+            }}
+            onDismiss={() => handleSetError(null)}
+          />
+        )}
+
         {currentView === 'mainMenu' && (
           <MainMenu onSelectFeature={(feature) => {
             if (feature === 'spec') {
@@ -127,19 +157,32 @@ function App() {
         )}
 
         {currentView === 'chatInterface' && (
-          <div className="chat-interface">
-            <h2>Chat Interface</h2>
-            <p>Chat component will be implemented in task 11</p>
-            <div className="messages">
-              {messages.map((msg, idx) => (
-                <div key={idx} className={`message ${msg.role}`}>
-                  {msg.content}
-                </div>
-              ))}
-            </div>
-            {isLoading && <div className="loading">Loading...</div>}
-            {error && <div className="error">{error}</div>}
-          </div>
+          <ChatInterface
+            messages={messages}
+            isLoading={isLoading}
+            onSendMessage={(message) => {
+              // Store last message for retry
+              setLastMessage(message);
+              // Add user message to local state
+              addMessage({
+                role: 'user',
+                content: message,
+                timestamp: Date.now()
+              });
+              // Send message to extension
+              sendMessage({ type: 'sendChatMessage', data: { message } });
+              // Set loading state
+              setIsLoading(true);
+            }}
+            onNewSession={() => {
+              // Send new session message to extension
+              sendMessage({ type: 'newSession' });
+            }}
+            onSavePRD={(content, filename) => {
+              // Send save PRD message to extension
+              sendMessage({ type: 'savePRD', data: { content, filename } });
+            }}
+          />
         )}
       </div>
     </AppContext.Provider>

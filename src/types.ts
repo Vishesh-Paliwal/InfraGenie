@@ -40,6 +40,6 @@ export type WebviewMessage =
  */
 export type ExtensionMessage =
   | { type: 'chatResponse'; data: { message: string; isPRD: boolean } }
-  | { type: 'error'; data: { message: string } }
+  | { type: 'error'; data: { message: string; canRetry?: boolean } }
   | { type: 'loading'; data: { isLoading: boolean } }
   | { type: 'sessionCleared' };

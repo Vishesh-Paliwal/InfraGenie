@@ -63,8 +63,10 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "@types/marked": "^5.0.2",
     "dompurify": "^3.3.1",
     "jsdom": "^28.0.0",
+    "marked": "^9.1.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   }
