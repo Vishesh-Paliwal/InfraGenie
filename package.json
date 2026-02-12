@@ -17,7 +17,22 @@
         "command": "infra-genie.open",
         "title": "Open Infra Genie"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Infra Genie",
+      "properties": {
+        "infraGenie.apiEndpoint": {
+          "type": "string",
+          "default": "https://api.infragenie.com",
+          "description": "Backend API endpoint URL for Infra Genie"
+        },
+        "infraGenie.apiTimeout": {
+          "type": "number",
+          "default": 30000,
+          "description": "API request timeout in milliseconds"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

@@ -49,7 +49,7 @@ This implementation plan breaks down the Infra Genie VS Code extension into disc
     - Prevent multiple panels from being created
     - _Requirements: 7.3_
 
-- [ ] 4. Implement SessionManager
+- [x] 4. Implement SessionManager
   - Create SessionManager class to manage session state
   - Implement initializeSession() to store user input data
   - Implement addMessage() to append messages to history
@@ -58,25 +58,25 @@ This implementation plan breaks down the Infra Genie VS Code extension into disc
   - Implement getUserInput() to retrieve stored user input
   - _Requirements: 2.5, 5.5, 7.1, 7.2_
 
-- [ ] 5. Implement BackendAPIClient
-  - [ ] 5.1 Create BackendAPIClient class with configuration
+- [x] 5. Implement BackendAPIClient
+  - [x] 5.1 Create BackendAPIClient class with configuration
     - Read API endpoint and timeout from VS Code configuration
     - Set up fetch with proper headers and timeout
     - _Requirements: 8.1, 8.2, 8.4_
   
-  - [ ] 5.2 Implement sendInitialRequest() method
+  - [x] 5.2 Implement sendInitialRequest() method
     - Accept UserInputData and first message
     - Make POST request to /spec/init endpoint
     - Handle response parsing and error cases
     - _Requirements: 4.1_
   
-  - [ ] 5.3 Implement sendMessage() method
+  - [x] 5.3 Implement sendMessage() method
     - Accept message and conversation history
     - Make POST request to /spec/chat endpoint
     - Handle response parsing and error cases
     - _Requirements: 4.2_
   
-  - [ ] 5.4 Implement error handling for API calls
+  - [x] 5.4 Implement error handling for API calls
     - Handle network errors (connection refused, DNS failure)
     - Handle timeout errors
     - Handle HTTP error responses (4xx, 5xx)
