@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChatMessage } from '../types';
 import MessageBubble from './MessageBubble';
+import LoadingIndicator from './LoadingIndicator';
+import styles from './ChatInterface.module.css';
 
 interface ChatInterfaceProps {
   messages: ChatMessage[];
@@ -19,22 +21,30 @@ function ChatInterface({
 }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-scroll to bottom when new messages are added
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Focus on textarea when component mounts
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, []);
+
   // Handle sending a message
   const handleSend = () => {
     if (inputValue.trim() && !isLoading) {
       onSendMessage(inputValue);
       setInputValue('');
+      // Return focus to textarea after sending
+      setTimeout(() => textareaRef.current?.focus(), 0);
     }
   };
 
   // Handle Enter key to send (Shift+Enter for new line)
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
@@ -47,22 +57,34 @@ function ChatInterface({
   };
 
   return (
-    <div className="chat-interface">
+    <div className={styles.chatInterface} role="main">
       {/* Header with title and New Session button */}
-      <div className="chat-header">
-        <h2>Spec Chat</h2>
+      <header className={styles.chatHeader}>
+        <h2 id="chat-title">Spec Chat</h2>
         <button 
-          className="new-session-button"
+          className={styles.newSessionButton}
           onClick={handleNewSession}
-          aria-label="Start a new session"
+          aria-label="Start a new session and clear current conversation"
         >
           New Session
         </button>
-      </div>
+      </header>
       
       {/* Scrollable messages container */}
-      <div className="messages-container">
+      <div 
+        className={styles.messagesContainer} 
+        role="log" 
+        aria-live="polite" 
+        aria-atomic="false"
+        aria-label="Chat messages"
+        aria-describedby="chat-title"
+      >
         {/* Render messages from state */}
+        {messages.length === 0 && (
+          <div className={styles.emptyState} role="status">
+            <p>Start a conversation by typing a message below.</p>
+          </div>
+        )}
         {messages.map((msg, idx) => (
           <MessageBubble
             key={idx}
@@ -72,32 +94,37 @@ function ChatInterface({
         ))}
         
         {/* Show loading indicator when API is processing */}
-        {isLoading && (
-          <div className="loading-indicator">
-            <div className="loading-spinner" aria-label="Loading"></div>
-            <span>Thinking...</span>
-          </div>
-        )}
+        {isLoading && <LoadingIndicator text="Thinking..." />}
         
-        <div ref={messagesEndRef} />
+        <div ref={messagesEndRef} aria-hidden="true" />
       </div>
       
       {/* Input area with textarea and send button */}
-      <div className="input-container">
+      <div className={styles.inputContainer} role="form" aria-label="Message input form">
+        <label htmlFor="message-input" className="visually-hidden">
+          Type your message
+        </label>
         <textarea
+          id="message-input"
+          ref={textareaRef}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Type your message..."
+          onKeyDown={handleKeyDown}
+          placeholder="Type your message... (Press Enter to send, Shift+Enter for new line)"
           disabled={isLoading}
-          className="message-input"
+          className={styles.messageInput}
           aria-label="Message input"
+          aria-describedby="send-hint"
+          rows={3}
         />
+        <span id="send-hint" className="visually-hidden">
+          Press Enter to send message, or Shift+Enter to add a new line
+        </span>
         <button 
           onClick={handleSend}
           disabled={isLoading || !inputValue.trim()}
-          className="send-button"
-          aria-label="Send message"
+          className={styles.sendButton}
+          aria-label={isLoading ? "Sending message..." : "Send message"}
         >
           Send
         </button>

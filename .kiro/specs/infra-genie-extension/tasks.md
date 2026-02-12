@@ -227,21 +227,21 @@ This implementation plan breaks down the Infra Genie VS Code extension into disc
   - Clear errors on successful operations
   - _Requirements: 4.5, 6.1, 6.2, 6.3_
 
-- [ ] 14. Implement loading states in webview
+- [x] 14. Implement loading states in webview
   - Create LoadingIndicator component
   - Show loading spinner during API calls
   - Display loading text
   - Disable input during loading
   - _Requirements: 4.3, 10.3_
 
-- [ ] 15. Implement accessibility features
+- [x] 15. Implement accessibility features
   - Add ARIA labels to all interactive elements
   - Ensure keyboard navigation works for all controls
   - Add focus management for form fields
   - Test with screen reader
   - _Requirements: 10.1, 10.2_
 
-- [ ] 16. Implement styling and theming
+- [x] 16. Implement styling and theming
   - Create CSS modules for components
   - Use VS Code CSS variables for theming
   - Ensure styles respect light/dark theme

@@ -5,6 +5,7 @@ import MainMenu from './MainMenu';
 import UserInputForm from './UserInputForm';
 import ChatInterface from './ChatInterface';
 import ErrorNotification from './ErrorNotification';
+import styles from './App.module.css';
 
 // Context for managing application state
 interface AppState {
@@ -121,7 +122,7 @@ function App() {
 
   return (
     <AppContext.Provider value={contextValue}>
-      <div className="app">
+      <div className={styles.app}>
         {/* Error notification displayed across all views */}
         {error && (
           <ErrorNotification

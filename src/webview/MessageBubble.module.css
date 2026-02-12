@@ -1,0 +1,224 @@
+/* Message Bubble Component Styles */
+.messageBubble {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  word-wrap: break-word;
+}
+
+.messageBubble.user {
+  align-self: flex-end;
+  background-color: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  margin-left: auto;
+}
+
+.messageBubble.assistant {
+  align-self: flex-start;
+  background-color: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border);
+}
+
+.messageContent {
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Markdown content styling */
+.messageContent :global(p) {
+  margin: 0.5em 0;
+}
+
+.messageContent :global(p:first-child) {
+  margin-top: 0;
+}
+
+.messageContent :global(p:last-child) {
+  margin-bottom: 0;
+}
+
+.messageContent :global(h1),
+.messageContent :global(h2),
+.messageContent :global(h3),
+.messageContent :global(h4),
+.messageContent :global(h5),
+.messageContent :global(h6) {
+  margin: 0.8em 0 0.4em 0;
+}
+
+.messageContent :global(h1:first-child),
+.messageContent :global(h2:first-child),
+.messageContent :global(h3:first-child) {
+  margin-top: 0;
+}
+
+.messageContent :global(ul),
+.messageContent :global(ol) {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+.messageContent :global(li) {
+  margin: 0.25em 0;
+}
+
+.messageContent :global(code) {
+  background-color: var(--vscode-textCodeBlock-background);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: var(--vscode-editor-font-family);
+  font-size: 0.9em;
+}
+
+.messageContent :global(pre) {
+  background-color: var(--vscode-textCodeBlock-background);
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 0.5em 0;
+}
+
+.messageContent :global(pre code) {
+  background-color: transparent;
+  padding: 0;
+}
+
+.messageContent :global(blockquote) {
+  border-left: 3px solid var(--vscode-textBlockQuote-border);
+  background-color: var(--vscode-textBlockQuote-background);
+  padding: 8px 12px;
+  margin: 0.5em 0;
+}
+
+.messageContent :global(a) {
+  color: var(--vscode-textLink-foreground);
+  text-decoration: none;
+}
+
+.messageContent :global(a:hover) {
+  text-decoration: underline;
+}
+
+.messageTimestamp {
+  font-size: 0.75em;
+  color: var(--vscode-descriptionForeground);
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+/* Copy button for regular messages */
+.copyButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  background-color: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+  border: 1px solid var(--vscode-button-border);
+  border-radius: 4px;
+  font-size: 0.8em;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.copyButton:hover {
+  opacity: 1;
+  background-color: var(--vscode-button-secondaryHoverBackground);
+}
+
+.copyButton:focus {
+  outline: 2px solid var(--vscode-focusBorder);
+  outline-offset: 1px;
+}
+
+/* PRD-specific action buttons */
+.prdActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--vscode-panel-border);
+  flex-wrap: wrap;
+}
+
+.prdActionButton {
+  padding: 6px 14px;
+  background-color: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.prdActionButton:hover {
+  background-color: var(--vscode-button-hoverBackground);
+}
+
+.prdActionButton:focus {
+  outline: 2px solid var(--vscode-focusBorder);
+  outline-offset: 2px;
+}
+
+.prdActionButton:active {
+  transform: translateY(1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .messageBubble {
+    max-width: 85%;
+    padding: 10px 14px;
+  }
+
+  .messageContent {
+    font-size: 0.95em;
+  }
+
+  .copyButton {
+    padding: 3px 8px;
+    font-size: 0.75em;
+  }
+
+  .prdActionButton {
+    padding: 5px 12px;
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  .messageBubble {
+    max-width: 90%;
+    padding: 8px 12px;
+  }
+
+  .messageContent {
+    font-size: 0.9em;
+  }
+
+  .messageContent :global(pre) {
+    padding: 8px;
+    font-size: 0.85em;
+  }
+
+  .messageTimestamp {
+    font-size: 0.7em;
+  }
+
+  .prdActions {
+    gap: 6px;
+  }
+
+  .prdActionButton {
+    flex: 1;
+    min-width: 0;
+  }
+}

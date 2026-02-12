@@ -1,0 +1,205 @@
+/* User Input Form Component Styles */
+.userInputFormContainer {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.formHeader h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: var(--vscode-foreground);
+}
+
+.formDescription {
+  color: var(--vscode-descriptionForeground);
+  font-size: 1.1em;
+  margin: 0;
+}
+
+.userInputForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formGroup label {
+  font-weight: 500;
+  color: var(--vscode-foreground);
+  font-size: 0.95em;
+}
+
+.formGroup fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.formGroup legend {
+  font-weight: 500;
+  color: var(--vscode-foreground);
+  font-size: 0.95em;
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+.required {
+  color: var(--vscode-errorForeground);
+}
+
+.formGroup input[type="text"],
+.formGroup select,
+.formGroup textarea {
+  padding: 8px 12px;
+  background-color: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border);
+  border-radius: 4px;
+  font-family: var(--vscode-font-family);
+  font-size: 0.95em;
+  transition: border-color 0.2s ease;
+}
+
+.formGroup input[type="text"]:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--vscode-focusBorder);
+  box-shadow: 0 0 0 1px var(--vscode-focusBorder);
+}
+
+.multiSelect {
+  min-height: 120px;
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 20px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.radioLabel input[type="radio"] {
+  cursor: pointer;
+}
+
+.radioLabel span {
+  color: var(--vscode-foreground);
+}
+
+.helpText {
+  font-size: 0.85em;
+  color: var(--vscode-descriptionForeground);
+  font-style: italic;
+}
+
+.errorMessage {
+  color: var(--vscode-errorForeground);
+  font-size: 0.85em;
+  display: block;
+  margin-top: 4px;
+}
+
+.formGroup input.error,
+.formGroup select.error,
+.formGroup textarea.error {
+  border-color: var(--vscode-errorForeground);
+}
+
+.formActions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.submitButton {
+  padding: 12px 32px;
+  background-color: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:hover {
+  background-color: var(--vscode-button-hoverBackground);
+}
+
+.submitButton:focus {
+  outline: 2px solid var(--vscode-focusBorder);
+  outline-offset: 2px;
+}
+
+.submitButton:active {
+  transform: translateY(1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .userInputFormContainer {
+    padding: 24px 16px;
+  }
+
+  .formHeader h2 {
+    font-size: 1.75em;
+  }
+
+  .formDescription {
+    font-size: 1em;
+  }
+
+  .userInputForm {
+    gap: 20px;
+  }
+
+  .radioGroup {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .userInputFormContainer {
+    padding: 16px 12px;
+  }
+
+  .formHeader {
+    margin-bottom: 24px;
+  }
+
+  .formHeader h2 {
+    font-size: 1.5em;
+  }
+
+  .submitButton {
+    width: 100%;
+    padding: 14px 24px;
+  }
+}

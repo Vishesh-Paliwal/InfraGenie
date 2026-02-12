@@ -584,6 +584,11 @@ h1 {
   animation: spin 1s linear infinite;
 }
 
+.loading-text {
+  color: var(--vscode-descriptionForeground);
+  font-size: 0.95em;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -681,4 +686,51 @@ h1 {
 .dismiss-button:focus {
   outline: 2px solid var(--vscode-focusBorder);
   outline-offset: 2px;
+}
+
+/* Accessibility Utilities */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Focus visible styles for better keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--vscode-focusBorder);
+  outline-offset: 2px;
+}
+
+/* Empty state for chat */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--vscode-descriptionForeground);
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 1.1em;
 }

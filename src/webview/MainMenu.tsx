@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './MainMenu.module.css';
 
 interface FeatureCardProps {
   title: string;
@@ -10,21 +11,22 @@ interface FeatureCardProps {
 function FeatureCard({ title, description, available, onClick }: FeatureCardProps) {
   return (
     <div 
-      className={`feature-card ${available ? 'available' : 'unavailable'}`}
+      className={`${styles.featureCard} ${available ? styles.available : styles.unavailable}`}
       onClick={available ? onClick : undefined}
       role="button"
       tabIndex={available ? 0 : -1}
       aria-disabled={!available}
-      onKeyPress={(e) => {
+      aria-label={`${title}: ${description}${!available ? ' (Coming Soon)' : ''}`}
+      onKeyDown={(e) => {
         if (available && (e.key === 'Enter' || e.key === ' ')) {
           e.preventDefault();
           onClick();
         }
       }}
     >
-      <h3>{title}</h3>
-      <p>{description}</p>
-      {!available && <span className="coming-soon-badge">Coming Soon</span>}
+      <h3 aria-hidden="true">{title}</h3>
+      <p aria-hidden="true">{description}</p>
+      {!available && <span className={styles.comingSoonBadge} aria-hidden="true">Coming Soon</span>}
     </div>
   );
 }
@@ -40,32 +42,34 @@ function MainMenu({ onSelectFeature }: MainMenuProps) {
   };
 
   return (
-    <div className="main-menu">
-      <div className="main-menu-header">
+    <div className={styles.mainMenu} role="main">
+      <div className={styles.mainMenuHeader}>
         <h1>Infra Genie</h1>
-        <p className="subtitle">From idea to deployment</p>
+        <p className={styles.subtitle}>From idea to deployment</p>
       </div>
       
-      <div className="feature-cards">
-        <FeatureCard
-          title="Spec"
-          description="Generate PRDs from your project requirements"
-          available={true}
-          onClick={() => onSelectFeature('spec')}
-        />
-        <FeatureCard
-          title="Traffic Simulator"
-          description="Simulate traffic patterns for your application"
-          available={false}
-          onClick={handleComingSoon}
-        />
-        <FeatureCard
-          title="Deployer"
-          description="Deploy your infrastructure to the cloud"
-          available={false}
-          onClick={handleComingSoon}
-        />
-      </div>
+      <nav aria-label="Feature selection">
+        <div className={styles.featureCards} role="group" aria-label="Available features">
+          <FeatureCard
+            title="Spec"
+            description="Generate PRDs from your project requirements"
+            available={true}
+            onClick={() => onSelectFeature('spec')}
+          />
+          <FeatureCard
+            title="Traffic Simulator"
+            description="Simulate traffic patterns for your application"
+            available={false}
+            onClick={handleComingSoon}
+          />
+          <FeatureCard
+            title="Deployer"
+            description="Deploy your infrastructure to the cloud"
+            available={false}
+            onClick={handleComingSoon}
+          />
+        </div>
+      </nav>
     </div>
   );
 }
