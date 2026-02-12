@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import { UserInputData, ChatMessage } from './types';
+import { getValidatedConfiguration } from './configValidation';
+import { getLogger } from './logger';
 
 /**
  * Response structure from the Backend API.
@@ -55,13 +57,19 @@ export class BackendAPIClient {
   }
 
   /**
-   * Loads configuration from VS Code settings.
+   * Loads configuration from VS Code settings with validation.
    * Reads the API endpoint and timeout values.
    */
   private loadConfiguration(): void {
-    const config = vscode.workspace.getConfiguration('infraGenie');
-    this.baseURL = config.get('apiEndpoint', 'https://api.infragenie.com');
-    this.timeout = config.get('apiTimeout', 30000);
+    const logger = getLogger();
+    const config = getValidatedConfiguration();
+    this.baseURL = config.apiEndpoint;
+    this.timeout = config.apiTimeout;
+    
+    logger.info(
+      `Configuration loaded: endpoint=${this.baseURL}, timeout=${this.timeout}ms`,
+      'BackendAPIClient.loadConfiguration'
+    );
   }
 
   /**

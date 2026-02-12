@@ -3,6 +3,7 @@ import { WebviewMessage, ExtensionMessage, UserInputData, ChatMessage } from './
 import { SessionManager } from './SessionManager';
 import { BackendAPIClient, NetworkError, TimeoutError, APIError } from './BackendAPIClient';
 import { sanitizeUserInput, sanitizeChatMessage, sanitizeAPIResponse, sanitizeFilename } from './sanitization';
+import { getLogger } from './logger';
 
 /**
  * Manages the webview panel lifecycle for the Infra Genie extension.
@@ -14,7 +15,6 @@ export class WebviewPanelManager {
   private readonly extensionUri: vscode.Uri;
   private readonly sessionManager: SessionManager;
   private readonly apiClient: BackendAPIClient;
-  private readonly outputChannel: vscode.OutputChannel;
   private disposables: vscode.Disposable[] = [];
 
   /**
@@ -54,12 +54,21 @@ export class WebviewPanelManager {
     WebviewPanelManager.currentPanel = new WebviewPanelManager(panel, extensionUri);
   }
 
+  /**
+   * Notifies the current panel that configuration has changed.
+   * This triggers the BackendAPIClient to reload its configuration.
+   */
+  public static notifyConfigurationChanged(): void {
+    if (WebviewPanelManager.currentPanel) {
+      WebviewPanelManager.currentPanel.handleConfigurationChanged();
+    }
+  }
+
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
     this.panel = panel;
     this.extensionUri = extensionUri;
     this.sessionManager = new SessionManager();
     this.apiClient = new BackendAPIClient();
-    this.outputChannel = vscode.window.createOutputChannel('Infra Genie');
 
     // Set the webview's initial HTML content
     this.panel.webview.html = this.getWebviewContent(this.panel.webview);
@@ -164,6 +173,7 @@ export class WebviewPanelManager {
    * Requirements: 2.3, 2.5
    */
   private async handleUserInputSubmission(data: UserInputData): Promise<void> {
+    const logger = getLogger();
     try {
       // Sanitize user input
       const sanitizedData = sanitizeUserInput(data);
@@ -172,7 +182,7 @@ export class WebviewPanelManager {
       this.sessionManager.initializeSession(sanitizedData);
       
       // Log the action
-      this.outputChannel.appendLine(`[${new Date().toISOString()}] User input submitted and session initialized`);
+      logger.info('User input submitted and session initialized', 'handleUserInputSubmission');
       
       // Send acknowledgment to webview
       this.sendMessage({
@@ -190,6 +200,7 @@ export class WebviewPanelManager {
    * Requirements: 3.3, 4.2, 4.3, 4.4, 4.5, 6.4
    */
   private async handleChatMessage(data: { message: string }): Promise<void> {
+    const logger = getLogger();
     try {
       // Sanitize the message
       const sanitizedMessage = sanitizeChatMessage(data.message);
@@ -217,7 +228,7 @@ export class WebviewPanelManager {
       });
       
       // Log the action
-      this.outputChannel.appendLine(`[${new Date().toISOString()}] Sending chat message to API`);
+      logger.info('Sending chat message to API', 'handleChatMessage');
       
       // Call BackendAPIClient to send message
       const userInput = this.sessionManager.getUserInput();
@@ -259,7 +270,7 @@ export class WebviewPanelManager {
       });
       
       // Log success
-      this.outputChannel.appendLine(`[${new Date().toISOString()}] Chat response received and sent to webview`);
+      logger.info('Chat response received and sent to webview', 'handleChatMessage');
     } catch (error: any) {
       // Send loading false
       this.sendMessage({
@@ -278,12 +289,13 @@ export class WebviewPanelManager {
    * Requirements: 7.1, 7.5
    */
   private handleNewSession(): void {
+    const logger = getLogger();
     try {
       // Clear session data via SessionManager
       this.sessionManager.clearSession();
       
       // Log the action
-      this.outputChannel.appendLine(`[${new Date().toISOString()}] Session cleared`);
+      logger.info('Session cleared', 'handleNewSession');
       
       // Send session cleared message to webview
       this.sendMessage({
@@ -300,6 +312,7 @@ export class WebviewPanelManager {
    * Requirements: 5.4
    */
   private async handleSavePRD(data: { content: string; filename: string }): Promise<void> {
+    const logger = getLogger();
     try {
       // Sanitize filename
       const sanitizedFilename = sanitizeFilename(data.filename);
@@ -320,7 +333,7 @@ export class WebviewPanelManager {
       );
       
       // Log success
-      this.outputChannel.appendLine(`[${new Date().toISOString()}] PRD saved to ${sanitizedFilename}`);
+      logger.info(`PRD saved to ${sanitizedFilename}`, 'handleSavePRD');
       
       // Show success notification
       vscode.window.showInformationMessage(`PRD saved to ${sanitizedFilename}`);
@@ -337,8 +350,7 @@ export class WebviewPanelManager {
       }
       
       // Log error
-      this.outputChannel.appendLine(`[${new Date().toISOString()}] Error saving PRD: ${errorMessage}`);
-      this.outputChannel.appendLine(error.stack || '');
+      logger.error(`Error saving PRD: ${errorMessage}`, error, 'handleSavePRD');
       
       // Show error notification
       vscode.window.showErrorMessage(`Infra Genie: ${errorMessage}`);
@@ -356,6 +368,7 @@ export class WebviewPanelManager {
    * Logs errors and sends appropriate messages to the webview.
    */
   private handleError(error: any, context: string): void {
+    const logger = getLogger();
     let errorMessage = 'An unexpected error occurred. Please try again.';
     let canRetry = false;
     
@@ -374,11 +387,8 @@ export class WebviewPanelManager {
       canRetry = false;
     }
     
-    // Log to output channel
-    this.outputChannel.appendLine(`[${new Date().toISOString()}] Error in ${context}: ${errorMessage}`);
-    if (error.stack) {
-      this.outputChannel.appendLine(error.stack);
-    }
+    // Log error with full details
+    logger.error(errorMessage, error, context);
     
     // Send error to webview with retry flag
     this.sendMessage({
@@ -388,6 +398,17 @@ export class WebviewPanelManager {
         canRetry: canRetry
       }
     });
+  }
+
+  /**
+   * Handles configuration changes.
+   * Reloads the BackendAPIClient configuration when settings change.
+   * Requirements: 8.3
+   */
+  private handleConfigurationChanged(): void {
+    const logger = getLogger();
+    logger.info('Configuration changed, reloading API client configuration', 'handleConfigurationChanged');
+    this.apiClient.reloadConfiguration();
   }
 
   /**
