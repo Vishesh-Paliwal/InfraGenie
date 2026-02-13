@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './LoadingIndicator.module.css';
+// Styles imported in App.tsx
 
 interface LoadingIndicatorProps {
   text?: string;
@@ -11,9 +11,9 @@ interface LoadingIndicatorProps {
  */
 function LoadingIndicator({ text = 'Loading...' }: LoadingIndicatorProps) {
   return (
-    <div className={styles.loadingIndicator} role="status" aria-live="polite">
-      <div className={styles.loadingSpinner} aria-label="Loading spinner"></div>
-      <span className={styles.loadingText}>{text}</span>
+    <div className="loadingIndicator" role="status" aria-live="polite">
+      <div className="loadingSpinner" aria-label="Loading spinner"></div>
+      <span className="loadingText">{text}</span>
     </div>
   );
 }

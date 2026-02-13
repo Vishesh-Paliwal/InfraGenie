@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ErrorNotification.module.css';
+// Styles imported in App.tsx
 
 interface ErrorNotificationProps {
   message: string;
@@ -15,15 +15,15 @@ function ErrorNotification({
   onDismiss
 }: ErrorNotificationProps) {
   return (
-    <div className={styles.errorNotification} role="alert" aria-live="assertive">
-      <div className={styles.errorContent}>
-        <div className={styles.errorIcon} aria-hidden="true">⚠️</div>
-        <div className={styles.errorMessage}>{message}</div>
+    <div className="errorNotification" role="alert" aria-live="assertive">
+      <div className="errorContent">
+        <div className="errorIcon" aria-hidden="true">⚠️</div>
+        <div className="errorMessage">{message}</div>
       </div>
-      <div className={styles.errorActions}>
+      <div className="errorActions">
         {canRetry && onRetry && (
           <button 
-            className={styles.retryButton}
+            className="retryButton"
             onClick={onRetry}
             aria-label="Retry operation"
           >
@@ -31,7 +31,7 @@ function ErrorNotification({
           </button>
         )}
         <button 
-          className={styles.dismissButton}
+          className="dismissButton"
           onClick={onDismiss}
           aria-label="Dismiss error"
         >

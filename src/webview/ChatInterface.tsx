@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ChatMessage } from '../types';
 import MessageBubble from './MessageBubble';
 import LoadingIndicator from './LoadingIndicator';
-import styles from './ChatInterface.module.css';
+// Styles imported in App.tsx
 
 interface ChatInterfaceProps {
   messages: ChatMessage[];
@@ -57,12 +57,12 @@ function ChatInterface({
   };
 
   return (
-    <div className={styles.chatInterface} role="main">
+    <div className="chatInterface" role="main">
       {/* Header with title and New Session button */}
-      <header className={styles.chatHeader}>
+      <header className="chatHeader">
         <h2 id="chat-title">Spec Chat</h2>
         <button 
-          className={styles.newSessionButton}
+          className="newSessionButton"
           onClick={handleNewSession}
           aria-label="Start a new session and clear current conversation"
         >
@@ -72,7 +72,7 @@ function ChatInterface({
       
       {/* Scrollable messages container */}
       <div 
-        className={styles.messagesContainer} 
+        className="messagesContainer" 
         role="log" 
         aria-live="polite" 
         aria-atomic="false"
@@ -81,7 +81,7 @@ function ChatInterface({
       >
         {/* Render messages from state */}
         {messages.length === 0 && (
-          <div className={styles.emptyState} role="status">
+          <div className="emptyState" role="status">
             <p>Start a conversation by typing a message below.</p>
           </div>
         )}
@@ -100,7 +100,7 @@ function ChatInterface({
       </div>
       
       {/* Input area with textarea and send button */}
-      <div className={styles.inputContainer} role="form" aria-label="Message input form">
+      <div className="inputContainer" role="form" aria-label="Message input form">
         <label htmlFor="message-input" className="visually-hidden">
           Type your message
         </label>
@@ -112,7 +112,7 @@ function ChatInterface({
           onKeyDown={handleKeyDown}
           placeholder="Type your message... (Press Enter to send, Shift+Enter for new line)"
           disabled={isLoading}
-          className={styles.messageInput}
+          className="messageInput"
           aria-label="Message input"
           aria-describedby="send-hint"
           rows={3}
@@ -123,7 +123,7 @@ function ChatInterface({
         <button 
           onClick={handleSend}
           disabled={isLoading || !inputValue.trim()}
-          className={styles.sendButton}
+          className="sendButton"
           aria-label={isLoading ? "Sending message..." : "Send message"}
         >
           Send

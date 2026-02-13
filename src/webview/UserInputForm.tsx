@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { UserInputData } from '../types';
-import styles from './UserInputForm.module.css';
+// Styles imported in App.tsx
 
 interface UserInputFormProps {
   onSubmit: (data: UserInputData) => void;
@@ -106,31 +106,31 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
   };
 
   return (
-    <div className={styles.userInputFormContainer} role="main">
-      <div className={styles.formHeader}>
+    <div className="userInputFormContainer" role="main">
+      <div className="formHeader">
         <h2 id="form-title">Project Requirements</h2>
-        <p className={styles.formDescription}>
+        <p className="formDescription">
           Tell us about your project so we can generate an accurate PRD
         </p>
       </div>
 
       <form 
         onSubmit={handleSubmit} 
-        className={styles.userInputForm}
+        className="userInputForm"
         aria-labelledby="form-title"
         noValidate
       >
         {/* App Type */}
-        <div className={styles.formGroup}>
+        <div className="formGroup">
           <label htmlFor="appType">
-            App Type <span className={styles.required} aria-label="required">*</span>
+            App Type <span className="required" aria-label="required">*</span>
           </label>
           <select
             id="appType"
             name="appType"
             value={formData.appType || ''}
             onChange={handleInputChange}
-            className={errors.appType ? styles.error : ''}
+            className={errors.appType ? 'error' : ''}
             aria-required="true"
             aria-invalid={!!errors.appType}
             aria-describedby={errors.appType ? 'appType-error' : undefined}
@@ -146,23 +146,23 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             <option value="other">Other</option>
           </select>
           {errors.appType && (
-            <span id="appType-error" className={styles.errorMessage} role="alert">
+            <span id="appType-error" className="errorMessage" role="alert">
               {errors.appType}
             </span>
           )}
         </div>
 
         {/* Expected Users */}
-        <div className={styles.formGroup}>
+        <div className="formGroup">
           <label htmlFor="expectedUsers">
-            Expected Users <span className={styles.required} aria-label="required">*</span>
+            Expected Users <span className="required" aria-label="required">*</span>
           </label>
           <select
             id="expectedUsers"
             name="expectedUsers"
             value={formData.expectedUsers || ''}
             onChange={handleInputChange}
-            className={errors.expectedUsers ? styles.error : ''}
+            className={errors.expectedUsers ? 'error' : ''}
             aria-required="true"
             aria-invalid={!!errors.expectedUsers}
             aria-describedby={errors.expectedUsers ? 'expectedUsers-error' : undefined}
@@ -175,23 +175,23 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             <option value="100000+">100,000+</option>
           </select>
           {errors.expectedUsers && (
-            <span id="expectedUsers-error" className={styles.errorMessage} role="alert">
+            <span id="expectedUsers-error" className="errorMessage" role="alert">
               {errors.expectedUsers}
             </span>
           )}
         </div>
 
         {/* Traffic Pattern */}
-        <div className={styles.formGroup}>
+        <div className="formGroup">
           <label htmlFor="trafficPattern">
-            Traffic Pattern <span className={styles.required} aria-label="required">*</span>
+            Traffic Pattern <span className="required" aria-label="required">*</span>
           </label>
           <select
             id="trafficPattern"
             name="trafficPattern"
             value={formData.trafficPattern || ''}
             onChange={handleInputChange}
-            className={errors.trafficPattern ? styles.error : ''}
+            className={errors.trafficPattern ? 'error' : ''}
             aria-required="true"
             aria-invalid={!!errors.trafficPattern}
             aria-describedby={errors.trafficPattern ? 'trafficPattern-error' : undefined}
@@ -203,20 +203,20 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             <option value="unpredictable">Unpredictable</option>
           </select>
           {errors.trafficPattern && (
-            <span id="trafficPattern-error" className={styles.errorMessage} role="alert">
+            <span id="trafficPattern-error" className="errorMessage" role="alert">
               {errors.trafficPattern}
             </span>
           )}
         </div>
 
         {/* Processing Type */}
-        <div className={styles.formGroup}>
+        <div className="formGroup">
           <fieldset>
             <legend>
-              Processing Type <span className={styles.required} aria-label="required">*</span>
+              Processing Type <span className="required" aria-label="required">*</span>
             </legend>
-            <div className={styles.radioGroup} role="radiogroup" aria-required="true">
-              <label className={styles.radioLabel}>
+            <div className="radioGroup" role="radiogroup" aria-required="true">
+              <label className="radioLabel">
                 <input
                   type="radio"
                   name="processingType"
@@ -227,7 +227,7 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
                 />
                 <span>Real-time</span>
               </label>
-              <label className={styles.radioLabel}>
+              <label className="radioLabel">
                 <input
                   type="radio"
                   name="processingType"
@@ -241,23 +241,23 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             </div>
           </fieldset>
           {errors.processingType && (
-            <span className={styles.errorMessage} role="alert">
+            <span className="errorMessage" role="alert">
               {errors.processingType}
             </span>
           )}
         </div>
 
         {/* Data Sensitivity */}
-        <div className={styles.formGroup}>
+        <div className="formGroup">
           <label htmlFor="dataSensitivity">
-            Data Sensitivity <span className={styles.required} aria-label="required">*</span>
+            Data Sensitivity <span className="required" aria-label="required">*</span>
           </label>
           <select
             id="dataSensitivity"
             name="dataSensitivity"
             value={formData.dataSensitivity || ''}
             onChange={handleInputChange}
-            className={errors.dataSensitivity ? styles.error : ''}
+            className={errors.dataSensitivity ? 'error' : ''}
             aria-required="true"
             aria-invalid={!!errors.dataSensitivity}
             aria-describedby={errors.dataSensitivity ? 'dataSensitivity-error' : undefined}
@@ -269,16 +269,16 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             <option value="regulated">Regulated (HIPAA, PCI, etc.)</option>
           </select>
           {errors.dataSensitivity && (
-            <span id="dataSensitivity-error" className={styles.errorMessage} role="alert">
+            <span id="dataSensitivity-error" className="errorMessage" role="alert">
               {errors.dataSensitivity}
             </span>
           )}
         </div>
 
         {/* Regions */}
-        <div className={styles.formGroup}>
+        <div className="formGroup">
           <label htmlFor="regions">
-            Regions <span className={styles.required} aria-label="required">*</span>
+            Regions <span className="required" aria-label="required">*</span>
           </label>
           <select
             id="regions"
@@ -286,7 +286,7 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             multiple
             value={formData.regions || []}
             onChange={handleRegionChange}
-            className={errors.regions ? `${styles.error} ${styles.multiSelect}` : styles.multiSelect}
+            className={errors.regions ? `error multiSelect` : 'multiSelect'}
             aria-required="true"
             aria-invalid={!!errors.regions}
             aria-describedby="regions-help regions-error"
@@ -300,25 +300,25 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             <option value="ap-northeast-1">Asia Pacific (Tokyo)</option>
             <option value="ap-south-1">Asia Pacific (Mumbai)</option>
           </select>
-          <span id="regions-help" className={styles.helpText}>Hold Ctrl/Cmd to select multiple regions</span>
+          <span id="regions-help" className="helpText">Hold Ctrl/Cmd to select multiple regions</span>
           {errors.regions && (
-            <span id="regions-error" className={styles.errorMessage} role="alert">
+            <span id="regions-error" className="errorMessage" role="alert">
               {errors.regions}
             </span>
           )}
         </div>
 
         {/* Availability Requirement */}
-        <div className={styles.formGroup}>
+        <div className="formGroup">
           <label htmlFor="availabilityRequirement">
-            Availability Requirement <span className={styles.required} aria-label="required">*</span>
+            Availability Requirement <span className="required" aria-label="required">*</span>
           </label>
           <select
             id="availabilityRequirement"
             name="availabilityRequirement"
             value={formData.availabilityRequirement || ''}
             onChange={handleInputChange}
-            className={errors.availabilityRequirement ? styles.error : ''}
+            className={errors.availabilityRequirement ? 'error' : ''}
             aria-required="true"
             aria-invalid={!!errors.availabilityRequirement}
             aria-describedby={errors.availabilityRequirement ? 'availabilityRequirement-error' : undefined}
@@ -330,16 +330,16 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             <option value="99.999%">99.999% (5.26 minutes downtime/year)</option>
           </select>
           {errors.availabilityRequirement && (
-            <span id="availabilityRequirement-error" className={styles.errorMessage} role="alert">
+            <span id="availabilityRequirement-error" className="errorMessage" role="alert">
               {errors.availabilityRequirement}
             </span>
           )}
         </div>
 
         {/* Detailed Description */}
-        <div className={styles.formGroup}>
+        <div className="formGroup">
           <label htmlFor="detailedDescription">
-            Detailed Description <span className={styles.required} aria-label="required">*</span>
+            Detailed Description <span className="required" aria-label="required">*</span>
           </label>
           <textarea
             id="detailedDescription"
@@ -348,21 +348,21 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             onChange={handleInputChange}
             rows={6}
             placeholder="Describe your project in detail..."
-            className={errors.detailedDescription ? styles.error : ''}
+            className={errors.detailedDescription ? 'error' : ''}
             aria-required="true"
             aria-invalid={!!errors.detailedDescription}
             aria-describedby={errors.detailedDescription ? 'detailedDescription-error' : undefined}
           />
           {errors.detailedDescription && (
-            <span id="detailedDescription-error" className={styles.errorMessage} role="alert">
+            <span id="detailedDescription-error" className="errorMessage" role="alert">
               {errors.detailedDescription}
             </span>
           )}
         </div>
 
         {/* Submit Button */}
-        <div className={styles.formActions}>
-          <button type="submit" className={styles.submitButton} aria-label="Submit form and start chat">
+        <div className="formActions">
+          <button type="submit" className="submitButton" aria-label="Submit form and start chat">
             Start Chat
           </button>
         </div>

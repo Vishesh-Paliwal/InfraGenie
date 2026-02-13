@@ -1,21 +1,15 @@
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
-import { UserInputData, ChatMessage } from './types';
+import { UserInputData } from './types';
 import { APIResponse } from './BackendAPIClient';
 
 /**
  * Sanitization utilities for user input and API responses.
  * 
  * This module provides functions to sanitize data before sending to the backend API
- * and before displaying in the webview. It uses DOMPurify to remove potentially
- * dangerous HTML/JavaScript content.
+ * and before displaying in the webview. It uses simple string operations to remove
+ * potentially dangerous HTML/JavaScript content.
  * 
  * Requirements: 9.3, 9.4
  */
-
-// Create a DOMPurify instance for Node.js environment
-const window = new JSDOM('').window;
-const purify = DOMPurify(window as any);
 
 /**
  * Sanitizes a string by removing potentially dangerous HTML/JavaScript content.
@@ -28,12 +22,17 @@ function sanitizeString(input: string): string {
     return '';
   }
   
-  // Remove any HTML tags and scripts
-  const sanitized = purify.sanitize(input, {
-    ALLOWED_TAGS: [], // No HTML tags allowed
-    ALLOWED_ATTR: [], // No attributes allowed
-    KEEP_CONTENT: true, // Keep text content
-  });
+  // Remove HTML tags and script content
+  let sanitized = input.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  sanitized = sanitized.replace(/<[^>]+>/g, '');
+  
+  // Decode HTML entities
+  sanitized = sanitized
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'");
   
   return sanitized.trim();
 }
@@ -93,17 +92,13 @@ export function sanitizeChatMessage(message: string): string {
  * @returns The sanitized API response
  */
 export function sanitizeAPIResponse(response: APIResponse): APIResponse {
-  // For API responses, we allow some HTML/markdown for formatting
-  // but remove dangerous elements like scripts, iframes, etc.
-  const sanitizedMessage = purify.sanitize(response.message, {
-    ALLOWED_TAGS: [
-      'p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-      'ul', 'ol', 'li', 'blockquote', 'code', 'pre', 'a', 'table', 'thead',
-      'tbody', 'tr', 'th', 'td', 'hr', 'div', 'span'
-    ],
-    ALLOWED_ATTR: ['href', 'title', 'class'],
-    ALLOW_DATA_ATTR: false,
-  });
+  // For API responses, we do basic sanitization but preserve formatting
+  let sanitizedMessage = response.message;
+  
+  // Remove script tags and event handlers
+  sanitizedMessage = sanitizedMessage.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  sanitizedMessage = sanitizedMessage.replace(/on\w+\s*=\s*["'][^"']*["']/gi, '');
+  sanitizedMessage = sanitizedMessage.replace(/javascript:/gi, '');
   
   return {
     message: sanitizedMessage,

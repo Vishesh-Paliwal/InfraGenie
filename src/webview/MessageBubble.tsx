@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { marked } from 'marked';
 import { ChatMessage } from '../types';
-import styles from './MessageBubble.module.css';
+// Styles imported in App.tsx
 
 interface MessageBubbleProps {
   message: ChatMessage;
@@ -53,34 +53,34 @@ function MessageBubble({ message, onSavePRD }: MessageBubbleProps) {
 
   return (
     <div
-      className={`${styles.messageBubble} ${styles[message.role]}`}
+      className={`messageBubble ${message.role}`}
       onMouseEnter={() => setShowCopyButton(true)}
       onMouseLeave={() => setShowCopyButton(false)}
       role="article"
       aria-label={`${message.role === 'user' ? 'User' : 'Assistant'} message from ${formatTimestamp(message.timestamp)}`}
     >
       <div 
-        className={styles.messageContent}
+        className="messageContent"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
         aria-label="Message content"
       />
       
-      <div className={styles.messageTimestamp} aria-label={`Sent at ${formatTimestamp(message.timestamp)}`}>
+      <div className="messageTimestamp" aria-label={`Sent at ${formatTimestamp(message.timestamp)}`}>
         {formatTimestamp(message.timestamp)}
       </div>
       
       {/* PRD-specific actions - show Copy and Save buttons */}
       {message.isPRD && (
-        <div className={styles.prdActions} role="group" aria-label="PRD actions">
+        <div className="prdActions" role="group" aria-label="PRD actions">
           <button 
-            className={styles.prdActionButton}
+            className="prdActionButton"
             onClick={copyToClipboard}
             aria-label="Copy PRD content to clipboard"
           >
             {copyFeedback ? '✓ Copied!' : 'Copy'}
           </button>
           <button 
-            className={styles.prdActionButton}
+            className="prdActionButton"
             onClick={handleSave}
             aria-label="Save PRD to file in workspace"
           >
@@ -92,7 +92,7 @@ function MessageBubble({ message, onSavePRD }: MessageBubbleProps) {
       {/* Regular copy button on hover for non-PRD messages */}
       {!message.isPRD && showCopyButton && (
         <button 
-          className={styles.copyButton}
+          className="copyButton"
           onClick={copyToClipboard}
           aria-label="Copy message content to clipboard"
         >

@@ -57,18 +57,7 @@ const webviewConfig = {
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: {
-                auto: true,
-                localIdentName: '[name]__[local]--[hash:base64:5]'
-              }
-            }
-          }
-        ]
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
