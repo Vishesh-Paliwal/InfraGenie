@@ -95,7 +95,7 @@ export function getValidatedConfiguration(): { apiEndpoint: string; apiTimeout: 
   }
 
   // Get values with defaults
-  const apiEndpoint = config.get<string>('apiEndpoint', 'https://api.infragenie.com');
+  const apiEndpoint = config.get<string>('apiEndpoint', 'http://localhost:3000');
   const apiTimeout = config.get<number>('apiTimeout', 30000);
 
   // If validation failed, show error message and use defaults
@@ -110,7 +110,7 @@ export function getValidatedConfiguration(): { apiEndpoint: string; apiTimeout: 
     });
     
     return {
-      apiEndpoint: 'https://api.infragenie.com',
+      apiEndpoint: 'http://localhost:3000',
       apiTimeout: 30000,
     };
   }

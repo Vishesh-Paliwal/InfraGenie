@@ -42,6 +42,19 @@ Infra Genie is a VS Code extension that helps development teams go from idea to 
 4. WHEN a user submits the User_Input_Form with missing required fields, THE Extension SHALL display validation errors and prevent submission
 5. THE Extension SHALL persist the User_Input_Form data for the duration of the Session
 
+#### Demo Placeholders (Example Values)
+
+Use these realistic placeholders in the Spec form to guide users during a demo:
+
+- **App type**: AI app
+- **Expected users**: 10,000-100,000
+- **Traffic pattern**: Spiky (end-of-month billing spikes)
+- **Processing type**: Real-time (alerts within minutes)
+- **Data sensitivity**: Confidential
+- **Regions**: us-east-1, eu-west-1
+- **Availability requirement**: 99.9%
+- **Detailed description**: "We are building an AI FinOps copilot for mid-market SaaS companies. It analyzes cloud bills, identifies waste, and recommends cost optimizations. Users want near-real-time anomaly alerts and weekly savings reports."
+
 ### Requirement 3: Chat Interface Display
 
 **User Story:** As a user, I want to interact with an AI agent through a chat interface, so that I can have natural conversations about my project requirements.

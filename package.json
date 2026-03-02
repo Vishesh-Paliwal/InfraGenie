@@ -23,7 +23,7 @@
       "properties": {
         "infraGenie.apiEndpoint": {
           "type": "string",
-          "default": "https://api.infragenie.com",
+          "default": "http://localhost:3000",
           "description": "Backend API endpoint URL for Infra Genie"
         },
         "infraGenie.apiTimeout": {

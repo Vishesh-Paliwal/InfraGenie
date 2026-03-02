@@ -347,7 +347,7 @@ function UserInputForm({ onSubmit }: UserInputFormProps) {
             value={formData.detailedDescription || ''}
             onChange={handleInputChange}
             rows={6}
-            placeholder="Describe your project in detail..."
+            placeholder="Example: We are building an AI FinOps copilot for mid-market SaaS companies to analyze cloud spend, detect anomalies, and recommend savings."
             className={errors.detailedDescription ? 'error' : ''}
             aria-required="true"
             aria-invalid={!!errors.detailedDescription}
